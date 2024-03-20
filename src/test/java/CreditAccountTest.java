@@ -20,9 +20,9 @@ class CreditAccountTest {
     @ParameterizedTest
     @ValueSource(longs = {0, 100, -100})
     public void addValue(long money) {
-        Account testAccZeroLim = new CreditAccount(0);
+        Account testAccZeroLimValue = new CreditAccount(0);
 
-        Assertions.assertTrue(testAccZeroLim.add(money));
+        Assertions.assertTrue(testAccZeroLimValue.add(money));
     }
 
     @ParameterizedTest
@@ -38,9 +38,9 @@ class CreditAccountTest {
             "-100, -100_000, true"
     })
     public void addCsv(long money, long lim, boolean expected) {
-        Account testAcc = new CreditAccount(lim);
+        Account testAccCsv = new CreditAccount(lim);
 
-        Assertions.assertEquals(expected, testAcc.add(money));
+        Assertions.assertEquals(expected, testAccCsv.add(money));
     }
 
     @Test

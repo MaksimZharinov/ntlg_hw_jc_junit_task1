@@ -1,6 +1,6 @@
 public abstract class Account {
 
-    protected static int balance;
+    protected int balance;
 
     public abstract boolean add(long amount);
 

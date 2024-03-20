@@ -11,6 +11,7 @@ public class CreditAccount extends Account {
 
     @Override
     public boolean add(long amount) {
+        if (amount < 0) amount = -amount;
         balance += amount;
         if (balance > 0) {
             balance -= amount;
@@ -22,6 +23,7 @@ public class CreditAccount extends Account {
 
     @Override
     public boolean pay(long amount) {
+        if (amount < 0) amount = -amount;
         balance -= amount;
         if (balance < LIMIT) {
             balance += amount;

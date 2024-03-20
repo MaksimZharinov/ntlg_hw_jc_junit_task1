@@ -7,6 +7,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 class CreditAccountTest {
 
     @Test
+    void addAbstract() {
+        long money = 100;
+
+        Assertions.assertFalse(CreditAccount.add(money));   //Как правильно протестировать данный метод?
+    }
+
+
+    @Test
     void add() {
         Account testAccZeroLim = new CreditAccount(0);
         long money = 100;
@@ -31,10 +39,10 @@ class CreditAccountTest {
             "100, 0, false",
             "-100, 0, true",
             "0, 100_000, true",
-            "100, 100_000, true",
+            "100, 100_000, false",
             "-100, 100_000, true",
             "0, -100_000, true",
-            "100, -100_000, true",
+            "100, -100_000, false",
             "-100, -100_000, true"
     })
     public void addCsv(long money, long lim, boolean expected) {

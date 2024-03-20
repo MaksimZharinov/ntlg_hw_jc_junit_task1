@@ -7,29 +7,40 @@ import org.junit.jupiter.params.provider.ValueSource;
 class CreditAccountTest {
 
     @Test
-    void add() {                                          //Если тест запускать отдельно, то проходит.
-        long money = 100;                                 //Если запускать всё вместе, то валится.
+    void add() {
+        Account testAccZeroLim = new CreditAccount(0);
+        long money = 100;
         boolean expected = false;
 
-        boolean result = CreditAccount.add(money);
+        boolean result = testAccZeroLim.add(money);
 
         Assertions.assertEquals(expected,result);
     }
 
-    @ParameterizedTest                                     //Если сделать (longs = {0, 100, -100}),
-    @ValueSource(longs = {0, -100})                        //то тест валится, при отдельном запуске.
-    public void addValue(long money) {                     //Если запускать всё сразу, то отрабатывает.
-        Assertions.assertTrue(CreditAccount.add(money));
+    @ParameterizedTest
+    @ValueSource(longs = {0, 100, -100})
+    public void addValue(long money) {
+        Account testAccZeroLim = new CreditAccount(0);
+
+        Assertions.assertTrue(testAccZeroLim.add(money));
     }
 
-    @ParameterizedTest                                     //Тест отрабатывает в пределах ожидаемого.
+    @ParameterizedTest
     @CsvSource(value = {
-            "0, true",
-            "100, false",
-            "-100, true"
+            "0, 0, true",
+            "100, 0, false",
+            "-100, 0, true",
+            "0, 100_000, true",
+            "100, 100_000, true",
+            "-100, 100_000, true",
+            "0, -100_000, true",
+            "100, -100_000, true",
+            "-100, -100_000, true"
     })
-    public void addCsv(long money, boolean expected) {
-        Assertions.assertEquals(expected, CreditAccount.add(money));
+    public void addCsv(long money, long lim, boolean expected) {
+        Account testAcc = new CreditAccount(lim);
+
+        Assertions.assertEquals(expected, testAcc.add(money));
     }
 
     @Test

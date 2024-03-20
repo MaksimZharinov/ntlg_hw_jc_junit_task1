@@ -1,6 +1,7 @@
 public class SimpleAccount extends Account {
 
-    public static boolean add(long amount) {
+    @Override
+    public boolean add(long amount) {
         balance += amount;
         return true;
     }

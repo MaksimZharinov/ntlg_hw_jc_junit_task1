@@ -2,11 +2,15 @@ public class CreditAccount extends Account {
     private final long LIMIT;
 
     public CreditAccount(long limit) {
-        LIMIT = -limit;
+        if (limit < 0) {
+            LIMIT = limit;
+        } else {
+            LIMIT = -limit;
+        }
     }
 
-
-    public static boolean add(long amount) {
+    @Override
+    public boolean add(long amount) {
         balance += amount;
         if (balance > 0) {
             balance -= amount;

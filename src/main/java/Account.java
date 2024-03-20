@@ -2,9 +2,7 @@ public abstract class Account {
 
     protected static int balance;
 
-//    public static boolean add(long amount) {
-//        return false;
-//    }
+    public abstract boolean add(long amount);
 
     public abstract boolean pay(long amount);
 

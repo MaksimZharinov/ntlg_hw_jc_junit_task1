@@ -8,9 +8,10 @@ class SimpleAccountTest {
     @ParameterizedTest
     @ValueSource(longs = {0, 100, -100})
     public void add(long value) {
+        Account testAcc = new SimpleAccount();
         boolean expected = true;
 
-        boolean result = SimpleAccount.add(value);
+        boolean result = testAcc.add(value);
 
         Assertions.assertEquals(expected, result);
     }

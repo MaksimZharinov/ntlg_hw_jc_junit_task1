@@ -1,57 +1,72 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 class CreditAccountTest {
+    private static long startTimeAll;
+    private static long limit;
+    private long startTimeTest;
 
-    @Test
-    void addAbstract() {
-        long money = 100;
 
-        Assertions.assertFalse(CreditAccount.add(money));   //Как правильно протестировать данный метод?
+    @BeforeAll
+    public static void setUp() {
+        startTimeAll = System.nanoTime();
+        limit = 100;
     }
 
-
-    @Test
-    void add() {
-        Account testAccZeroLim = new CreditAccount(0);
-        long money = 100;
-        boolean expected = false;
-
-        boolean result = testAccZeroLim.add(money);
-
-        Assertions.assertEquals(expected,result);
+    @AfterAll
+    public static void tearDown() {
+        System.out.println("Testing CreditAccount complete: " +
+                ((System.nanoTime() - startTimeAll) / 1000000) +
+                " milliseconds");
     }
 
-    @ParameterizedTest
-    @ValueSource(longs = {0, 100, -100})
-    public void addValue(long money) {
-        Account testAccZeroLimValue = new CreditAccount(0);
+    @BeforeEach
+    public void setUpTest() {
+        System.out.println("Starting new test");
+        startTimeTest = System.nanoTime();
+    }
 
-        Assertions.assertTrue(testAccZeroLimValue.add(money));
+    @AfterEach
+    public void tearDownTest() {
+        System.out.println("Test complete: " +
+                (System.nanoTime() - startTimeTest) +
+                " nanoseconds");
     }
 
     @ParameterizedTest
     @CsvSource(value = {
-            "0, 0, true",
-            "100, 0, false",
-            "-100, 0, true",
-            "0, 100_000, true",
-            "100, 100_000, false",
-            "-100, 100_000, true",
-            "0, -100_000, true",
-            "100, -100_000, false",
-            "-100, -100_000, true"
+            "0, true",
+            "-1, false",
+            "50, true",
+            "100, true",
+            "110, false"
     })
-    public void addCsv(long money, long lim, boolean expected) {
-        Account testAccCsv = new CreditAccount(lim);
-
-        Assertions.assertEquals(expected, testAccCsv.add(money));
+    public void pay(long money, boolean expected) {
+        Assertions.assertEquals(new CreditAccount(limit).pay(money), expected);
     }
+    @ParameterizedTest
+    @CsvSource(value = {
+            "0, 0, true",
+            "-1, 0, false",
+            "50, 0, false",
+            "100, 0, false",
+            "110, 0, false",
+            "0, 50, true",
+            "-1, 50, false",
+            "50, 50, true",
+            "100, 50, false",
+            "110, 50, false",
+            "0, 100, true",
+            "-1, 100, false",
+            "50, 100, true",
+            "100, 100, true",
+            "110, 100, false"
+    })
+    public void add(long money, long balance, boolean expected) {
+        Account testAcc = new CreditAccount(limit);
+        testAcc.pay(balance);
 
-    @Test
-    void pay() {
+        Assertions.assertEquals(testAcc.add(money), expected);
     }
 }
